@@ -3,12 +3,21 @@ import 'dotenv/config'
 import { db } from './config/db.js'
 import { favoritesTable } from './db/schema.js'
 import { and, eq } from 'drizzle-orm'
+import job from './config/cron.js'
 
 const app = express()
 
 const PORT = process.env.PORT
+job.start();
 
 app.use(express.json())
+
+app.get('/api/health', (req, res) => {
+    res.status(200).json({
+        success: true,
+        message: "API is working"
+    });
+});
 
 app.post('/api/favourites',async(req,res)=>{
     try {
