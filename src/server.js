@@ -40,16 +40,21 @@ app.delete('/api/favourites/:userId/:recipeId', async(req,res) => {
     }
 })
 
-app.get('/api/favourites/:userId', async(req,res)=>{
+app.get('/api/favourites/:userId', async (req, res) => {
     try {
-        const {userId} = req.params;
-        const userFavourites = await db.select().from(favoritesTable).where(eq(favoritesTable).where(eq(favoritesTable.userId,userId)))
+        const { userId } = req.params;
 
-        res.status(200).json(userFavourites)
+        const userFavourites = await db
+            .select()
+            .from(favoritesTable)
+            .where(eq(favoritesTable.userId, userId));
+
+        res.status(200).json(userFavourites);
     } catch (error) {
-        console.log(error)
+        console.log(error);
+        res.status(500).json({ error: "Something went wrong" });
     }
-})
+});
 
 app.listen(PORT, ()=>{
     console.log("Server is running on PORT :5000")
